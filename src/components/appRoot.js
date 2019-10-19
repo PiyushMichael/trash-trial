@@ -9,9 +9,10 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, Text, StatusBar, Image, Dimensions, Animated } from 'react-native';
 import Captain from 'assets/captain.png';
+import Background from 'assets/background.png';
 
 const side = Dimensions.get('screen').width;
-const moveFirst = -900;
+const moveFirstX = -900;
 const moveSecond = -200;
 const scaleFirst = 10;
 
@@ -23,8 +24,43 @@ class AppRoot extends Component {
 
   render() {
     const firstTransformX = this.state.scroll.interpolate({
-      inputRange: [0, 300],
-      outputRange: [moveFirst, (moveFirst - 150)],
+      inputRange: [0, 500],
+      outputRange: [(moveFirstX - 80), (moveFirstX - 180)],
+      extrapolate: 'clamp',
+    });
+    const firstOpacity = this.state.scroll.interpolate({
+      inputRange: [0, 500],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+    const secondTransformY = this.state.scroll.interpolate({
+      inputRange: [1000, 1700],
+      outputRange: [-300, 150],
+      extrapolate: 'clamp',
+    });
+    const thirdTransformY = this.state.scroll.interpolate({
+      inputRange: [1000, 1700],
+      outputRange: [0, 270],
+      extrapolate: 'clamp',
+    });
+    const titleTransform = this.state.scroll.interpolate({
+      inputRange: [0, 150],
+      outputRange: [0, 90],
+      extrapolate: 'clamp',
+    });
+    const titleOpacity = this.state.scroll.interpolate({
+      inputRange: [0, 150],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+    const backgroundTransformY = this.state.scroll.interpolate({
+      inputRange: [0, 1000],
+      outputRange: [-125, 375],
+      extrapolate: 'clamp',
+    });
+    const textTransformY = this.state.scroll.interpolate({
+      inputRange: [1700, 2000],
+      outputRange: [0, 150],
       extrapolate: 'clamp',
     });
 
@@ -39,45 +75,80 @@ class AppRoot extends Component {
               { useNativeDriver: true }
             )}
           >
-            <View style={{ flex: 1, justifyContent: 'space-between', height: 4000 }}>
-              <View style={{ alignItems: 'center', padding: 20, backgroundColor: '#666', borderBottomEndRadius: 150, borderBottomStartRadius: 150 }}>
+            <View style={{ flex: 1, justifyContent: 'space-between', height: 3000 }}>
+              <Animated.View style={{
+                alignItems: 'center',
+                padding: 20,
+                backgroundColor: '#666',
+                borderBottomEndRadius: 150,
+                borderBottomStartRadius: 150,
+                opacity: titleOpacity,
+                transform: [
+                  { translateY: titleTransform },
+                ],
+              }}>
                 <Text style={{ fontSize: 32, fontFamily: 'Roboto', color: '#fff' }}>Scroll all the way down</Text>
-              </View>
+              </Animated.View>
               <View style={{ alignItems: 'flex-end', margin: 20 }}>
                 <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Higher</Text>
               </View>
               <View style={{ alignItems: 'flex-start' }}>
+                <Animated.Image source={Background} style={{
+                  width: side,
+                  height: side,
+                  resizeMode: 'contain',
+                  zIndex: 9,
+                  transform: [
+                    { translateY: backgroundTransformY},
+                  ],
+                }} />
                 <Animated.View style={{
                   backgroundColor: '#888888',
                   height: 200,
                   width: 200,
                   borderRadius: 100,
+                  opacity: firstOpacity,
+                  zIndex: 0,
                   transform: [
                     { translateX:  firstTransformX },
                     { scale: scaleFirst },
                   ],
-                  }}
-                />
+                }}/>
               </View>
               <View style={{ alignItems: 'flex-end', margin: 20 }}>
                 <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Further</Text>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <View style={{ backgroundColor: '#888888', height: 300, width: 300, borderRadius: 150 }} />
+                <Animated.View style={{
+                  backgroundColor: '#888888',
+                  height: 300,
+                  width: 300,
+                  borderRadius: 150,
+                  transform: [
+                    { translateY: thirdTransformY },
+                  ],
+                }} />
                 <Animated.View style={{
                   backgroundColor: '#888888',
                   height: 160,
                   width: 160,
                   borderRadius: 80,
                   transform: [
-                    { translateX:  moveSecond },
+                    { translateX:  moveSecond },                    
+                    { translateY: secondTransformY },
                   ],
                   }}
                 />
               </View>
-              <View style={{ alignItems: 'flex-end', margin: 20 }}>
+              <Animated.View style={{
+                alignItems: 'flex-end',
+                margin: 20,
+                transform: [
+                  { translateY: textTransformY },
+                ],
+                }}>
                 <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Faster</Text>
-              </View>
+              </Animated.View>
               <Image source={Captain} style={{ width: side, height: side }} />
             </View>  
           </Animated.ScrollView>
