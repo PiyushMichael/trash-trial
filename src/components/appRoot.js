@@ -87,10 +87,12 @@ class AppRoot extends Component {
                   { translateY: titleTransform },
                 ],
               }}>
-                <Text style={{ fontSize: 32, fontFamily: 'Roboto', color: '#fff' }}>Scroll all the way down</Text>
+                <Text style={{ fontSize: 32, fontFamily: 'Roboto', color: '#fff' }}>Scroll. But slowly :)</Text>
               </Animated.View>
-              <View style={{ alignItems: 'flex-end', margin: 20 }}>
-                <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Higher</Text>
+              <View style={{ alignItems: 'flex-end' }}>
+                <View style={{ backgroundColor: '#000', padding: 10, paddingHorizontal: 20, borderTopLeftRadius: 50, borderBottomLeftRadius: 50 }}>
+                  <Text style={{ fontSize: 64, fontFamily: 'Roboto', color: '#fff' }}>Higher</Text>
+                </View>
               </View>
               <View style={{ alignItems: 'flex-start' }}>
                 <Animated.Image source={Background} style={{
@@ -103,7 +105,7 @@ class AppRoot extends Component {
                   ],
                 }} />
                 <Animated.View style={{
-                  backgroundColor: '#888888',
+                  backgroundColor: '#0195FF',
                   height: 200,
                   width: 200,
                   borderRadius: 100,
@@ -115,12 +117,14 @@ class AppRoot extends Component {
                   ],
                 }}/>
               </View>
-              <View style={{ alignItems: 'flex-end', margin: 20 }}>
-                <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Further</Text>
+              <View style={{ alignItems: 'flex-end' }}>
+              <View style={{ backgroundColor: '#000', padding: 10, paddingHorizontal: 20, borderTopLeftRadius: 50, borderBottomLeftRadius: 50 }}>
+                <Text style={{ fontSize: 64, fontFamily: 'Roboto', color: '#fff' }}>Further</Text>
+              </View>
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 <Animated.View style={{
-                  backgroundColor: '#888888',
+                  backgroundColor: '#A3D9FF',
                   height: 300,
                   width: 300,
                   borderRadius: 150,
@@ -129,7 +133,7 @@ class AppRoot extends Component {
                   ],
                 }} />
                 <Animated.View style={{
-                  backgroundColor: '#888888',
+                  backgroundColor: '#0063FF',
                   height: 160,
                   width: 160,
                   borderRadius: 80,
@@ -142,12 +146,13 @@ class AppRoot extends Component {
               </View>
               <Animated.View style={{
                 alignItems: 'flex-end',
-                margin: 20,
                 transform: [
                   { translateY: textTransformY },
                 ],
-                }}>
-                <Text style={{ fontSize: 64, fontFamily: 'Roboto' }}>Faster</Text>
+              }}>
+                <View style={{ backgroundColor: '#000', padding: 10, paddingHorizontal: 20, borderTopLeftRadius: 50, borderBottomLeftRadius: 50 }}>                
+                  <Text style={{ fontSize: 64, fontFamily: 'Roboto', color: '#fff' }}>Faster</Text>
+                </View>
               </Animated.View>
               <Image source={Captain} style={{ width: side, height: side }} />
             </View>  
