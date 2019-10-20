@@ -1,85 +1,62 @@
 import React, { Component } from 'react';
-import { authorize, refresh, revoke } from 'react-native-app-auth';
-import { View, Text, Button } from 'react-native';
-
-const config = {
-    issuer: 'https://dev-696618.oktapreview.com/oauth2/default',
-    clientId: '381991259352105',
-    redirectUrl: 'com.dev-696618:/callback',
-    additionalParameters: {},
-    scopes: ['openid', 'profile', 'email', 'offline_access']
-};
+import { View, Text, Button, TextInput, Image } from 'react-native';
+import { getUserIdApi } from 'api/instaApi';
 
 class Insta extends Component {
     state = {
-        hasLoggedInOnce: false,
-        accessToken: '',
-        accessTokenExpirationDate: '',
-        refreshToken: '',
+        field: '',
+        user: null,
     }
 
-    authorize = async () => {
-        try {
-            const authState = await authorize(config);
-            this.setState(
-                {
-                    hasLoggedInOnce: true,
-                    accessToken: authState.accessToken,
-                    accessTokenExpirationDate: authState.accessTokenExpirationDate,
-                    refreshToken: authState.refreshToken
+    _fetchUser() {
+        getUserIdApi(this.state.field)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data.graphql.user;
+            this.setState({
+                user: {
+                    name: data.full_name,
+                    username: data.username,
+                    id: data.id,
+                    followers: data.edge_followed_by.count,
+                    following: data.edge_follow.count,
+                    posts: data.edge_owner_to_timeline_media.count,
+                    pic: data.profile_pic_url,
                 },
-                500
-            );
-        } catch (error) {
-            alert('Failed to log in', error.message);
-        }
-    };
-    
-    refresh = async () => {
-        try {
-            const authState = await refresh(config, {
-                refreshToken: this.state.refreshToken
             });
-            this.setState({
-                accessToken: authState.accessToken || this.state.accessToken,
-                accessTokenExpirationDate: authState.accessTokenExpirationDate || this.state.accessTokenExpirationDate,
-                refreshToken: authState.refreshToken || this.state.refreshToken
-            });
-        } catch (error) {
-            alert('Failed to refresh token', error.message);
-        }
-    };
-    
-    revoke = async () => {
-        try {
-            await revoke(config, {
-                tokenToRevoke: this.state.accessToken,
-                sendClientId: true
-            });
-            this.setState({
-                accessToken: '',
-                accessTokenExpirationDate: '',
-                refreshToken: ''
-            });
-        } catch (error) {
-            alert('Failed to revoke token', error.message);
-        }
-    };
+        })
+        .catch(e => console.log(e));
+    }
 
     render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Instagram</Text>
-                <View>
-                    <Text>Access Token: {this.state.accessToken}</Text>
+            <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                <View style={{ alignItems: 'center', margin: 40 }}><Text style={{ fontSize: 24, fontFamily: 'Roboto' }}>Instagram</Text></View>
+                <View style={{ flexDirection: 'row'}}>
+                    <TextInput
+                        value={this.state.field}
+                        onChangeText={(field) => this.setState({ field })}
+                        placeholder={'Username'}
+                        style={{ width: 200, margin: 10, borderColor: '#bbbbee', borderWidth: 2, borderRadius: 5, padding: 5 }}
+                    />
+                    <View style={{ padding: 20 }}>
+                        <Button onPress={() => this._fetchUser()} title="Get User Details" />
+                    </View>
                 </View>
-                <View>
-                    <Text>Token expiration date: {this.state.accessTokenExpirationDate}</Text>
-                </View>
-                <View>
-                    <Text>refresh Token: {this.state.refresh}</Text>
-                </View>
-                <Button onPress={() => this.authorize()} title="Authorise" />
+                {
+                    this.state.user &&
+                    <View style={{ margin: 20, flexDirection: 'row' }}>
+                        <Image source={{ uri: this.state.user.pic }} style={{ height: 100, width: 100 }} />
+                        <View style={{ margin: 10 }}>
+                            <Text>Name: {this.state.user.name}</Text>
+                            <Text>username: {this.state.user.username}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>Account ID: {this.state.user.id}</Text>
+                            <Text>{this.state.user.followers} followers</Text>
+                            <Text>following {this.state.user.following}</Text>
+                            <Text>{this.state.user.posts} posts</Text>
+                        </View>
+                    </View>
+                }          
             </View>
         );
     }
