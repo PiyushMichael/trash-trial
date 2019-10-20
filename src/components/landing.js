@@ -16,7 +16,7 @@ const moveFirstX = -900;
 const moveSecond = -200;
 const scaleFirst = 10;
 
-class AppRoot extends Component {
+class Landing extends Component {
   state = { 
     scroll: new Animated.Value(1),
     velocity: new Animated.Value(0),
@@ -163,4 +163,4 @@ class AppRoot extends Component {
   }
 };
 
-export default AppRoot;
+export default Landing;

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import AppRoot from 'components/appRoot';
+import AppContainer from 'navigations';
 
 class App extends Component {
   render() {
-    return (<AppRoot />);
+    return (<AppContainer />);
   }
 }
 
