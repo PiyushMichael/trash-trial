@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">trashTrial</string>
+    <string name="app_name">trash_demonstrator</string>
     <string name="facebook_app_id">700637940423400</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">[ACCOUNT_KIT_CLIENT_TOKEN]</string>
 </resources>
