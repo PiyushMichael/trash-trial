@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-const appId = '700637940423400';
-const appSecret = 'bda5db70b25acc3cf0a503bd8934e590';
-
 export const getFBidApi = () => {
     const url = 'https://www.facebook.com:443/piyush.michael';
     const axiosInstance = axios.create({
@@ -18,7 +15,11 @@ export const getFBidApi = () => {
         axiosInstance.get(url)
         .then(res => {
             const id = res.data.match(/"entity_id":"(\d*)"/);
-            resolve(id);
+            let substr = res.data.slice(0, id.index);
+            substr = substr.slice(substr.lastIndexOf('https'));
+            substr = substr.slice(0, substr.lastIndexOf(''));
+            substr = substr.replace(/\\/g, '"');
+            resolve({ id: id[1], url: substr });
         })
         .catch(e => {
             reject(e)
